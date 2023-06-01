@@ -25,32 +25,37 @@ public class BrassAndPoemTests
         var addProductMethod = GetMethodFromTopLevel("AddProduct");
         var products = Products;
         var productTypes = ProductTypes;
-
-        //input values for the add product dialog
-        Console.SetIn(new StringReader(@"The Raven
+        using (var reader = new StringReader(@"The Raven
 14900.05
-1"));
+1"))
+        {
+            //input values for the add product dialog
+            Console.SetIn(reader);
 
-        addProductMethod.Invoke(null, new object[] { products, productTypes });
-        //there should now be one more product
-        Assert.True(products.Count == 6);
-        //the new product should be called the Raven
-        var addedProduct = products.FirstOrDefault(p => p.Name == "The Raven" && p.Price == 14900.05M && p.ProductTypeId == 1);
-        Assert.False(addedProduct == null);
-    }
+            addProductMethod.Invoke(null, new object[] { products, productTypes });
+            //there should now be one more product
+            Assert.True(products.Count == 6);
+            //the new product should be called the Raven
+            var addedProduct = products.FirstOrDefault(p => p.Name == "The Raven" && p.Price == 14900.05M && p.ProductTypeId == 1);
+            Assert.False(addedProduct == null);
+        }
+}
 
     [Fact]
     public void TestDeleteProduct()
     {
         var products = Products;
         var deleteMethod = GetMethodFromTopLevel("DeleteProduct");
-        Console.SetIn(new StringReader("1"));
-        deleteMethod.Invoke(null, new object[] { products, ProductTypes });
+        using (var reader = new StringReader("1"))
+        {
+            Console.SetIn(reader);
+            deleteMethod.Invoke(null, new object[] { products, ProductTypes });
 
-        //the Trombone should be deleted
-        Assert.Equal(products.FirstOrDefault(p => p.Name == "Trombone"), null);
-        // the count should be one less
-        Assert.True(products.Count == 4);
+            //the Trombone should be deleted
+            Assert.Equal(products.FirstOrDefault(p => p.Name == "Trombone"), null);
+            // the count should be one less
+            Assert.True(products.Count == 4);
+        }
     }
 
     [Fact]
@@ -59,58 +64,65 @@ public class BrassAndPoemTests
         var products = Products;
         var updateMethod = GetMethodFromTopLevel("UpdateProduct");
         // inputs for update dialog (just change name, leave type and price)
-        Console.SetIn(new StringReader(@"1
+        using (var reader = new StringReader(@"1
 French Horn
 
 
-"));
-        updateMethod.Invoke(null, new object[] { products, ProductTypes });
+"))
+        {
+            Console.SetIn(reader);
+            updateMethod.Invoke(null, new object[] { products, ProductTypes });
 
-        //There should be a French Horn
-        Assert.NotEqual(products.Single(p => p.Name == "French Horn"), null);
-        //There should not be a Trombone
-        Assert.Equal(products.FirstOrDefault(p => p.Name == "Trombone"), null);
-        //The total number should still be 5
-        Assert.Equal(products.Count, 5);
+            //There should be a French Horn
+            Assert.NotEqual(products.Single(p => p.Name == "French Horn"), null);
+            //There should not be a Trombone
+            Assert.Equal(products.FirstOrDefault(p => p.Name == "Trombone"), null);
+            //The total number should still be 5
+            Assert.Equal(products.Count, 5);
+        }
     }
 
     [Fact]
     public void TestDisplayAllProducts()
     {
         var displayMethod = GetMethodFromTopLevel("DisplayAllProducts");
-        var writer = new StringWriter();
-        Console.SetOut(writer);
-        displayMethod.Invoke(null, new object[] { Products, ProductTypes });
-        var output = writer.ToString();
-        Assert.True(
-            output.Contains("Brass") &&
-            output.Contains("Poem") &&
-            output.Contains("Trombone") &&
-            output.Contains("Trumpet") &&
-            output.Contains("Tuba") &&
-            output.Contains("Ozymandias") &&
-            output.Contains("Leaves of Grass") &&
-            output.Contains("150.99") &&
-            output.Contains("246.99") &&
-            output.Contains("1250.99") &&
-            output.Contains("12350.99") &&
-            output.Contains("15650.99")
-            );
+        using (var writer = new StringWriter())
+        {
+            Console.SetOut(writer);
+            displayMethod.Invoke(null, new object[] { Products, ProductTypes });
+            var output = writer.ToString();
+            Assert.True(
+                output.Contains("Brass") &&
+                output.Contains("Poem") &&
+                output.Contains("Trombone") &&
+                output.Contains("Trumpet") &&
+                output.Contains("Tuba") &&
+                output.Contains("Ozymandias") &&
+                output.Contains("Leaves of Grass") &&
+                output.Contains("150.99") &&
+                output.Contains("246.99") &&
+                output.Contains("1250.99") &&
+                output.Contains("12350.99") &&
+                output.Contains("15650.99")
+                );
+        }
     }
 
     [Fact]
     public void TestDisplayMenu()
     {
         var displayMethod = GetMethodFromTopLevel("DisplayMenu");
-        var writer = new StringWriter();
-        Console.SetOut(writer);
-        displayMethod.Invoke(null, new object[] { });
-        Assert.Equal(writer.ToString(), @"1. Display all products
+        using (var writer = new StringWriter())
+        {
+            Console.SetOut(writer);
+            displayMethod.Invoke(null, new object[] { });
+            Assert.Equal(writer.ToString(), @"1. Display all products
 2. Delete a product
 3. Add a new product
 4. Update product properties
 5. Exit
 ");
+        }
 
     }
 
