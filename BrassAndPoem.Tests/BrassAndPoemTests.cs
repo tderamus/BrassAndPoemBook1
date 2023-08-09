@@ -29,6 +29,7 @@ public class BrassAndPoemTests
 14900.05
 1"))
         {
+            var stdIn = Console.In;
             //input values for the add product dialog
             Console.SetIn(reader);
 
@@ -38,6 +39,7 @@ public class BrassAndPoemTests
             //the new product should be called the Raven
             var addedProduct = products.FirstOrDefault(p => p.Name == "The Raven" && p.Price == 14900.05M && p.ProductTypeId == 1);
             Assert.False(addedProduct == null);
+            Console.SetIn(stdIn);
         }
 }
 
@@ -48,6 +50,7 @@ public class BrassAndPoemTests
         var deleteMethod = GetMethodFromTopLevel("DeleteProduct");
         using (var reader = new StringReader("1"))
         {
+            var stdIn = Console.In;
             Console.SetIn(reader);
             deleteMethod.Invoke(null, new object[] { products, ProductTypes });
 
@@ -55,6 +58,7 @@ public class BrassAndPoemTests
             Assert.Equal(products.FirstOrDefault(p => p.Name == "Trombone"), null);
             // the count should be one less
             Assert.True(products.Count == 4);
+            Console.SetIn(stdIn);
         }
     }
 
@@ -70,6 +74,7 @@ French Horn
 
 "))
         {
+            var stdIn = Console.In;
             Console.SetIn(reader);
             updateMethod.Invoke(null, new object[] { products, ProductTypes });
 
@@ -79,6 +84,7 @@ French Horn
             Assert.Equal(products.FirstOrDefault(p => p.Name == "Trombone"), null);
             //The total number should still be 5
             Assert.Equal(products.Count, 5);
+            Console.SetIn(stdIn);
         }
     }
 
@@ -88,6 +94,7 @@ French Horn
         var displayMethod = GetMethodFromTopLevel("DisplayAllProducts");
         using (var writer = new StringWriter())
         {
+            var stdOut = Console.Out;
             Console.SetOut(writer);
             displayMethod.Invoke(null, new object[] { Products, ProductTypes });
             var output = writer.ToString();
@@ -105,6 +112,7 @@ French Horn
                 output.Contains("12350.99") &&
                 output.Contains("15650.99")
                 );
+            Console.SetOut(stdOut);
         }
     }
 
@@ -114,6 +122,7 @@ French Horn
         var displayMethod = GetMethodFromTopLevel("DisplayMenu");
         using (var writer = new StringWriter())
         {
+            var stdOut = Console.Out;
             Console.SetOut(writer);
             displayMethod.Invoke(null, new object[] { });
             Assert.Equal(writer.ToString(), @"1. Display all products
@@ -122,6 +131,7 @@ French Horn
 4. Update product properties
 5. Exit
 ");
+            Console.SetOut(stdOut);
         }
 
     }
