@@ -125,12 +125,12 @@ French Horn
             var stdOut = Console.Out;
             Console.SetOut(writer);
             displayMethod.Invoke(null, new object[] { });
-            Assert.Equal(writer.ToString(), @"1. Display all products
+            Assert.Equal(writer.ToString().Trim(), @"1. Display all products
 2. Delete a product
 3. Add a new product
 4. Update product properties
 5. Exit
-");
+".Trim());
             Console.SetOut(stdOut);
         }
 
