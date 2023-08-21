@@ -55,7 +55,7 @@ public class BrassAndPoemTests
             deleteMethod.Invoke(null, new object[] { products, ProductTypes });
 
             //the Trombone should be deleted
-            Assert.Equal(products.FirstOrDefault(p => p.Name == "Trombone"), null);
+            Assert.Equal(products.FirstOrDefault(p => p.Name == "Trumpet"), null);
             // the count should be one less
             Assert.True(products.Count == 4);
             Console.SetIn(stdIn);
@@ -80,8 +80,8 @@ French Horn
 
             //There should be a French Horn
             Assert.NotEqual(products.Single(p => p.Name == "French Horn"), null);
-            //There should not be a Trombone
-            Assert.Equal(products.FirstOrDefault(p => p.Name == "Trombone"), null);
+            //There should not be a Trumpet
+            Assert.Equal(products.FirstOrDefault(p => p.Name == "Trumpet"), null);
             //The total number should still be 5
             Assert.Equal(products.Count, 5);
             Console.SetIn(stdIn);
