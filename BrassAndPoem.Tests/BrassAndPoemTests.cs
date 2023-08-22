@@ -22,82 +22,109 @@ public class BrassAndPoemTests
     [Fact]
     public void TestAddProduct()
     {
-        var addProductMethod = GetMethodFromTopLevel("AddProduct");
-        var products = Products;
-        var productTypes = ProductTypes;
-        using (var reader = new StringReader(@"The Raven
+        var stdIn = Console.In;
+        try
+        {
+
+            var addProductMethod = GetMethodFromTopLevel("AddProduct");
+            var products = Products;
+            var productTypes = ProductTypes;
+            using (var reader = new StringReader(@"The Raven
 14900.05
 1"))
-        {
-            var stdIn = Console.In;
-            //input values for the add product dialog
-            Console.SetIn(reader);
+            {
+                //input values for the add product dialog
+                Console.SetIn(reader);
 
-            addProductMethod.Invoke(null, new object[] { products, productTypes });
-            //there should now be one more product
-            Assert.True(products.Count == 6);
-            //the new product should be called the Raven
-            var addedProduct = products.FirstOrDefault(p => p.Name == "The Raven" && p.Price == 14900.05M && p.ProductTypeId == 1);
-            Assert.False(addedProduct == null);
-            Console.SetIn(stdIn);
+                addProductMethod.Invoke(null, new object[] { products, productTypes });
+                //there should now be one more product
+                Assert.True(products.Count == 6);
+                //the new product should be called the Raven
+                var addedProduct = products.FirstOrDefault(p => p.Name == "The Raven" && p.Price == 14900.05M && p.ProductTypeId == 1);
+                Assert.False(addedProduct == null);
+            }
         }
-}
+        catch (Exception ex)
+        {
+            Console.SetIn(stdIn);
+            throw ex;
+        }
+        Console.SetIn(stdIn);
+    }
 
     [Fact]
     public void TestDeleteProduct()
     {
-        var products = Products;
-        var deleteMethod = GetMethodFromTopLevel("DeleteProduct");
-        using (var reader = new StringReader("1"))
+        var stdIn = Console.In;
+        try
         {
-            var stdIn = Console.In;
-            Console.SetIn(reader);
-            deleteMethod.Invoke(null, new object[] { products, ProductTypes });
+            var products = Products;
+            var deleteMethod = GetMethodFromTopLevel("DeleteProduct");
+            using (var reader = new StringReader("1"))
+            {
+                Console.SetIn(reader);
+                deleteMethod.Invoke(null, new object[] { products, ProductTypes });
 
-            //the Trombone should be deleted
-            Assert.Equal(products.FirstOrDefault(p => p.Name == "Trumpet"), null);
-            // the count should be one less
-            Assert.True(products.Count == 4);
+                //the Trombone should be deleted
+                Assert.Equal(products.FirstOrDefault(p => p.Name == "Trumpet"), null);
+                // the count should be one less
+                Assert.True(products.Count == 4);
+                Console.SetIn(stdIn);
+            }
+        }
+        catch (Exception ex)
+        {
             Console.SetIn(stdIn);
+            throw ex;
         }
     }
 
     [Fact]
     public void TestUpdateProduct()
     {
-        var products = Products;
-        var updateMethod = GetMethodFromTopLevel("UpdateProduct");
-        // inputs for update dialog (just change name, leave type and price)
-        using (var reader = new StringReader(@"1
+        var stdIn = Console.In;
+        try
+        {
+            var products = Products;
+            var updateMethod = GetMethodFromTopLevel("UpdateProduct");
+            // inputs for update dialog (just change name, leave type and price)
+            using (var reader = new StringReader(@"1
 French Horn
 
 
 "))
-        {
-            var stdIn = Console.In;
-            Console.SetIn(reader);
-            updateMethod.Invoke(null, new object[] { products, ProductTypes });
+            {
+                Console.SetIn(reader);
+                updateMethod.Invoke(null, new object[] { products, ProductTypes });
 
-            //There should be a French Horn
-            Assert.NotEqual(products.Single(p => p.Name == "French Horn"), null);
-            //There should not be a Trumpet
-            Assert.Equal(products.FirstOrDefault(p => p.Name == "Trumpet"), null);
-            //The total number should still be 5
-            Assert.Equal(products.Count, 5);
+                //There should be a French Horn
+                Assert.NotEqual(products.Single(p => p.Name = s = "French Horn"), null);
+                //There should not be a Trumpet
+                Assert.Equal(products.FirstOrDefault(p => p.Name == "Trumpet"), null);
+                //The total number should still be 5
+                Assert.Equal(products.Count, 5);
+                Console.SetIn(stdIn);
+            }
+        }
+        catch (Exception ex)
+        {
             Console.SetIn(stdIn);
+            throw ex;
         }
     }
 
     [Fact]
     public void TestDisplayAllProducts()
     {
-        var displayMethod = GetMethodFromTopLevel("DisplayAllProducts");
-        using (var writer = new StringWriter())
+        var stdOut = Console.Out;
+        try
         {
-            var stdOut = Console.Out;
-            Console.SetOut(writer);
-            displayMethod.Invoke(null, new object[] { Products, ProductTypes });
-            var output = writer.ToString();
+            var displayMethod = GetMethodFromTopLevel("DisplayAllProducts");
+            using (var writer = new StringWriter())
+            {
+                Console.SetOut(writer);
+                displayMethod.Invoke(null, new object[] { Products, ProductTypes });
+                var output = writer.ToString();
             Assert.True(
                 output.Contains("Brass") &&
                 output.Contains("Poem") &&
@@ -113,17 +140,25 @@ French Horn
                 output.Contains("15650.99")
                 );
             Console.SetOut(stdOut);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.SetOut(stdOut);
+            throw ex;
         }
     }
 
     [Fact]
     public void TestDisplayMenu()
     {
-        var displayMethod = GetMethodFromTopLevel("DisplayMenu");
-        using (var writer = new StringWriter())
+        var stdOut = Console.Out;
+        try
         {
-            var stdOut = Console.Out;
-            Console.SetOut(writer);
+            var displayMethod = GetMethodFromTopLevel("DisplayMenu");
+        using (var writer = new StringWriter())
+            {
+                Console.SetOut(writer);
             displayMethod.Invoke(null, new object[] { });
             Assert.Equal(writer.ToString().Trim(), @"1. Display all products
 2. Delete a product
@@ -131,7 +166,12 @@ French Horn
 4. Update product properties
 5. Exit
 ".Trim());
+            }
+        }
+        catch (Exception ex)
+        {
             Console.SetOut(stdOut);
+            throw ex;
         }
 
     }
