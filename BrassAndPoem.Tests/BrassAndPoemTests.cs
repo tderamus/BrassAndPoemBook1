@@ -166,6 +166,7 @@ French Horn
 4. Update product properties
 5. Exit
 ".Trim());
+                Console.SetOut(stdOut);
             }
         }
         catch (Exception ex)
