@@ -98,7 +98,7 @@ French Horn
                 updateMethod.Invoke(null, new object[] { products, ProductTypes });
 
                 //There should be a French Horn
-                Assert.NotEqual(products.Single(p => p.Name = s = "French Horn"), null);
+                Assert.NotEqual(products.Single(p => p.Name == "French Horn"), null);
                 //There should not be a Trumpet
                 Assert.Equal(products.FirstOrDefault(p => p.Name == "Trumpet"), null);
                 //The total number should still be 5
