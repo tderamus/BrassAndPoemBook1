@@ -65,6 +65,7 @@ void DisplayMenu()
     3. Add a product
     4. Update a product
     5. Exit");
+    Console.WriteLine();
 }
 
 void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
@@ -75,16 +76,36 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
         Console.WriteLine($"{products.IndexOf(product) + 1}. {product.Name} - {product.Price:C} ({productType.Title})");
     }
     Console.WriteLine();
+    Console.WriteLine();
 }
 
 void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    Console.WriteLine("Enter the number of the product you would like to delete:");
+    DisplayAllProducts(products, productTypes);
+    int index = int.Parse(Console.ReadLine()) - 1;
+    products.RemoveAt(index);
+    Console.WriteLine("Product deleted.");
+    Console.WriteLine();
+    Console.WriteLine();
 }
 
 void AddProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    Console.WriteLine("Enter the name of the new product:");
+    string name = Console.ReadLine();
+    Console.WriteLine("Enter the price of the new product:");
+    decimal price = decimal.Parse(Console.ReadLine());
+    foreach (ProductType productType in productTypes)
+    {
+        Console.WriteLine($"{productType.Id}. {productType.Title}");
+    }
+    Console.WriteLine("Enter the product type id of the new product:");
+    int ProductTypeId = int.Parse(Console.ReadLine());
+    products.Add(new Product { Name = name, Price = price, ProductTypeId = ProductTypeId });
+    Console.WriteLine("Product added.");
+    Console.WriteLine();
+    Console.WriteLine();
 }
 
 void UpdateProduct(List<Product> products, List<ProductType> productTypes)
