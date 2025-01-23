@@ -69,7 +69,12 @@ void DisplayMenu()
 
 void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    foreach (Product product in products)
+    {
+        ProductType productType = productTypes.FirstOrDefault(pt => pt.Id == product.ProductTypeId);
+        Console.WriteLine($"{products.IndexOf(product) + 1}. {product.Name} - {product.Price:C} ({productType.Title})");
+    }
+    Console.WriteLine();
 }
 
 void DeleteProduct(List<Product> products, List<ProductType> productTypes)
