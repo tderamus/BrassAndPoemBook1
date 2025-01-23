@@ -29,15 +29,12 @@ Console.WriteLine();
 
 //implement your loop here
 string choice = null;
-while (choice != "0")
+while (choice != "5")
 {
     DisplayMenu();
     choice = Console.ReadLine();
     switch (choice)
     {
-        case "0":
-            Console.WriteLine("Goodbye!");
-            break;
         case "1":
             DisplayAllProducts(products, productTypes);
             break;
@@ -50,6 +47,9 @@ while (choice != "0")
         case "4":
             UpdateProduct(products, productTypes);
             break;
+        case "5":
+            Console.WriteLine("Goodbye!");
+            break;
         default:
             Console.WriteLine("Invalid selection. Please try again.");
             break;
@@ -60,11 +60,11 @@ while (choice != "0")
 void DisplayMenu()
 {
     Console.WriteLine(@"Select an option from the menu below:
-    0. Exit
     1. Display all products
     2. Delete a product
     3. Add a product
-    4. Update a product");
+    4. Update a product
+    5. Exit");
 }
 
 void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
