@@ -79,7 +79,13 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
 
 void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    Console.WriteLine("Enter the number of the product you would like to delete:");
+    DisplayAllProducts(products, productTypes);
+    int index = int.Parse(Console.ReadLine()) - 1;
+    products.RemoveAt(index);
+    Console.WriteLine("Product deleted.");
+    Console.WriteLine();
+    DisplayAllProducts(products, productTypes);
 }
 
 void AddProduct(List<Product> products, List<ProductType> productTypes)
