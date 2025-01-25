@@ -110,7 +110,22 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
 
 void UpdateProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    Console.WriteLine("Enter the number of the product you want to update.");
+    DisplayAllProducts(products, productTypes);
+    int index = int.Parse(Console.ReadLine()) - 1;
+    Console.WriteLine("Enter the new name of the product:");
+    string name = Console.ReadLine();
+    Console.WriteLine("Enter the new price of the product:");
+    decimal price = decimal.Parse(Console.ReadLine());
+    foreach (ProductType productType in productTypes)
+    {
+        Console.WriteLine($"{productType.Id}. {productType.Title}");
+    }
+    Console.WriteLine("Enter the new product type id of the product:");
+    int ProductTypeId = int.Parse(Console.ReadLine());
+    products[index] = new Product { Name = name, Price = price, ProductTypeId = ProductTypeId };
+    Console.WriteLine("Product updated.");
+    Console.WriteLine();
 }
 
 // don't move or change this!
